@@ -279,4 +279,4 @@ If the Z.AI API is unavailable, the built-in rule engine (`engine.ts`) handles t
 
 ## License
 
-Built for the UM Hackathon 2025.
+Built for the UM Hackathon 2026.
