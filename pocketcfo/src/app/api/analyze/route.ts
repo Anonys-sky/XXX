@@ -30,6 +30,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    console.log("[PocketCFO] Using API key prefix:", process.env.ZAI_API_KEY?.slice(0, 8) + "...");
+    console.log("[PocketCFO] Using base URL:", process.env.ZAI_BASE_URL);
+
     // Build company context from Firestore (demo mode uses mock data)
     const companyContext = JSON.stringify(
       {
@@ -44,7 +47,7 @@ export async function POST(req: NextRequest) {
 
     // Call Z.AI GLM-5
     const completion = await zai.chat.completions.create({
-      model: "glm-5",
+      model: "ilmu-glm-5.1",
       messages: [
         { role: "system", content: POCKETCFO_SYSTEM_PROMPT },
         { role: "user", content: userMessage },

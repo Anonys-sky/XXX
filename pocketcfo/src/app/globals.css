@@ -219,13 +219,31 @@ body {
     text-transform: uppercase;
     border-bottom: 2px solid #e2e8f0;
     padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.graph-header h3::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
 }
 
 .graph-flow {
     flex: 1;
     display: flex;
     justify-content: center;
-    gap: 120px;
+    gap: 100px;
     height: 100%;
     align-items: center;
     position: relative;
@@ -240,7 +258,11 @@ body {
     gap: 20px;
     z-index: 2;
     justify-content: center;
+    flex-shrink: 0;
 }
+
+.col-inputs { }
+.col-outcomes { }
 
 .col-engine {
     display: flex;
@@ -248,51 +270,112 @@ body {
     align-items: center;
     justify-content: center;
     height: auto;
+    padding: 0 10px;
 }
 
-.graph-flow::before {
-    content: '';
+/* ─── SVG Overlay Connections ─────────────────────────────── */
+.graph-svg-overlay {
     position: absolute;
-    top: 50%;
-    left: 10px;
-    right: 10px;
-    height: 2px;
-    border-top: 2px dashed #cbbcf1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
     z-index: 1;
-    transform: translateY(-50%);
+    overflow: visible;
 }
 
+.conn-glow {
+    fill: none;
+    stroke: rgba(149, 106, 230, 0.08);
+    stroke-width: 8;
+    stroke-linecap: round;
+}
+
+.conn-line {
+    fill: none;
+    stroke: rgba(149, 106, 230, 0.3);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-dasharray: 6 4;
+    animation: dash-flow 1.2s linear infinite;
+}
+
+@keyframes dash-flow {
+    to { stroke-dashoffset: -20; }
+}
+
+.conn-particle {
+    fill: var(--primary-color);
+    opacity: 0.85;
+}
+
+/* ─── Cards ───────────────────────────────────────────────── */
 .graph-card {
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 15px;
     width: 220px;
     position: relative;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    animation: card-appear 0.5s ease both;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.graph-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px -4px rgba(149, 106, 230, 0.15);
+}
+
+@keyframes card-appear {
+    from { opacity: 0; transform: translateY(12px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .input-card {
     background: white;
     border: 1px solid #e9dfff;
-    border-radius: 12px;
+    border-radius: 14px;
     width: 200px;
     padding: 15px;
     position: relative;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 0 0 0 rgba(149, 106, 230, 0);
     display: flex;
     align-items: flex-start;
     gap: 10px;
+    animation: card-appear 0.5s ease both;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.card-icon { color: #5ab2d3; background: #f0f9ff; padding: 8px; border-radius: 8px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
-.card-info .label { font-size: 0.65rem; color: #5ab2d3; font-weight: bold; }
+.input-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px -4px rgba(149, 106, 230, 0.15), 0 0 20px rgba(149, 106, 230, 0.08);
+    border-color: var(--primary-color);
+}
+
+.card-icon {
+    color: #5ab2d3;
+    background: linear-gradient(135deg, #f0f9ff, #ede9fe);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.input-card:hover .card-icon { transform: scale(1.08); }
+
+.card-info .label { font-size: 0.65rem; color: #5ab2d3; font-weight: bold; letter-spacing: 0.5px; }
 .card-info h4 { font-size: 0.85rem; color: var(--text-dark); margin: 3px 0; }
 .card-info .value { font-size: 0.8rem; color: #64748b; font-family: monospace; }
 
+/* ─── Engine Node ─────────────────────────────────────────── */
 .engine-node {
-    width: 70px;
-    height: 70px;
+    width: 76px;
+    height: 76px;
     background: white;
     border-radius: 50%;
     display: flex;
@@ -303,7 +386,40 @@ body {
     border: 2px solid var(--primary-color);
     position: relative;
     z-index: 2;
-    box-shadow: 0 4px 10px rgba(149, 106, 230, 0.2);
+    box-shadow: 0 4px 10px rgba(149, 106, 230, 0.2), 0 0 30px rgba(149, 106, 230, 0.08);
+    animation: engine-breathe 3s ease-in-out infinite;
+    transition: box-shadow 0.3s ease;
+}
+
+.engine-node:hover {
+    box-shadow: 0 4px 10px rgba(149, 106, 230, 0.3), 0 0 50px rgba(149, 106, 230, 0.15);
+}
+
+@keyframes engine-breathe {
+    0%, 100% { box-shadow: 0 4px 10px rgba(149, 106, 230, 0.2), 0 0 30px rgba(149, 106, 230, 0.08); }
+    50% { box-shadow: 0 4px 10px rgba(149, 106, 230, 0.3), 0 0 45px rgba(149, 106, 230, 0.15); }
+}
+
+.engine-ring {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(149, 106, 230, 0.2);
+    animation: ring-pulse 3s ease-in-out infinite;
+}
+
+.engine-ring::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1px solid rgba(149, 106, 230, 0.1);
+    animation: ring-pulse 3s ease-in-out infinite 0.5s;
+}
+
+@keyframes ring-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.12); opacity: 0; }
 }
 
 .engine-label {
@@ -314,14 +430,21 @@ body {
     letter-spacing: 0.5px;
 }
 
+/* ─── Outcome Cards ───────────────────────────────────────── */
 .outcome-card {
     width: 300px;
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 15px;
     position: relative;
     border: 1px solid;
     background: white;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    animation: card-appear 0.5s ease both;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.outcome-card:hover {
+    transform: translateY(-2px);
 }
 
 .outcome-header {
@@ -331,32 +454,55 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
     letter-spacing: 0.5px;
 }
-.outcome-card h4 { font-size: 0.85rem; margin-bottom: 6px; font-weight: 600; color: var(--text-dark); }
-.outcome-card p { font-size: 0.75rem; color: #64748b; }
 
-.outcome-card.rejected { border-color: #fca5a5; }
+.outcome-card h4 { font-size: 0.85rem; margin-bottom: 6px; font-weight: 600; color: var(--text-dark); }
+.outcome-card p { font-size: 0.75rem; color: #64748b; line-height: 1.4; }
+
+.outcome-card.rejected {
+    border-color: #fca5a5;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 0 0 0 rgba(239, 68, 68, 0);
+}
+.outcome-card.rejected:hover { box-shadow: 0 8px 16px -4px rgba(239, 68, 68, 0.12), 0 0 20px rgba(239, 68, 68, 0.06); }
 .outcome-card.rejected .outcome-header { background: #fef2f2; color: #ef4444; }
 
-.outcome-card.approved { border-color: #86efac; }
+.outcome-card.approved {
+    border-color: #86efac;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 0 0 0 rgba(16, 185, 129, 0);
+}
+.outcome-card.approved:hover { box-shadow: 0 8px 16px -4px rgba(16, 185, 129, 0.12), 0 0 20px rgba(16, 185, 129, 0.06); }
 .outcome-card.approved .outcome-header { background: #f0fdf4; color: #10b981; }
 
-.outcome-card.pending { border-color: #fcd34d; }
+.outcome-card.pending {
+    border-color: #fcd34d;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 0 0 0 rgba(217, 119, 6, 0);
+}
+.outcome-card.pending:hover { box-shadow: 0 8px 16px -4px rgba(217, 119, 6, 0.12), 0 0 20px rgba(217, 119, 6, 0.06); }
 .outcome-card.pending .outcome-header { background: #fffbeb; color: #d97706; }
 
+/* ─── Connector Dots ──────────────────────────────────────── */
 .connector-dot {
     width: 10px;
     height: 10px;
-    background: #cbbcf1;
+    background: var(--primary-color);
     border-radius: 50%;
     position: absolute;
     top: 50%;
     margin-top: -5px;
     border: 2px solid white;
+    z-index: 3;
+    box-shadow: 0 0 6px rgba(149, 106, 230, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.graph-card:hover .connector-dot {
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(149, 106, 230, 0.5);
+}
+
 .connector-dot.right { right: -6px; }
 .connector-dot.left { left: -6px; }
 

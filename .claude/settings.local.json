@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.bigmodel.cn)",
+      "Bash(curl -s -w '\\\\n%{http_code}' https://api.z.ai/api/coding/paas/v4/chat/completions -H 'Authorization: Bearer sk-0b20b2528ed4bb72a38dbd4098f42b871c2a91b4c5ecf0af' -H 'Content-Type: application/json' -d '{\"model\":\"glm-5\",\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}],\"max_tokens\":5}')",
+      "Bash(curl -s -w '\\\\n%{http_code}' https://api.z.ai/api/paas/v4/chat/completions -H 'Authorization: Bearer sk-0b20b2528ed4bb72a38dbd4098f42b871c2a91b4c5ecf0af' -H 'Content-Type: application/json' -d '{\"model\":\"glm-5\",\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}],\"max_tokens\":5}')"
+    ]
+  }
+}
