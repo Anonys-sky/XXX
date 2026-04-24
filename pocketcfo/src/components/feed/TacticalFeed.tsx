@@ -2,10 +2,9 @@
 
 // ═══════════════════════════════════════════════════════════════
 // PocketCFO — Tactical Feed (Real-time Decision Feed)
-// Asian Water Painting aesthetic
+// Now accepts external items and handlers from parent (Firestore)
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Activity } from "lucide-react";
 import type { TacticalFeedItem } from "@/lib/types";
@@ -13,28 +12,16 @@ import TacticalCard from "./TacticalCard";
 
 interface TacticalFeedProps {
   initialItems: TacticalFeedItem[];
+  onConfirm?: (id: string) => void;
+  onDismiss?: (id: string) => void;
 }
 
-export default function TacticalFeed({ initialItems }: TacticalFeedProps) {
-  const [items, setItems] = useState<TacticalFeedItem[]>(initialItems);
-
-  const handleConfirm = useCallback((id: string) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, status: "CONFIRMED" as const } : item
-      )
-    );
-  }, []);
-
-  const handleDismiss = useCallback((id: string) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, status: "DISMISSED" as const } : item
-      )
-    );
-  }, []);
-
-  const unreadCount = items.filter((i) => i.status === "UNREAD").length;
+export default function TacticalFeed({
+  initialItems,
+  onConfirm,
+  onDismiss,
+}: TacticalFeedProps) {
+  const unreadCount = initialItems.filter((i) => i.status === "UNREAD").length;
 
   return (
     <div className="flex flex-col h-full">
@@ -54,28 +41,28 @@ export default function TacticalFeed({ initialItems }: TacticalFeedProps) {
           )}
         </div>
         <span className="text-[10px] text-mist">
-          {items.length} decisions
+          {initialItems.length} decisions
         </span>
       </div>
 
       {/* Scrollable Feed */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         <AnimatePresence mode="popLayout">
-          {items.map((item, index) => (
+          {initialItems.map((item, index) => (
             <motion.div
               key={item.id}
               transition={{ delay: index * 0.05 }}
             >
               <TacticalCard
                 item={item}
-                onConfirm={handleConfirm}
-                onDismiss={handleDismiss}
+                onConfirm={onConfirm}
+                onDismiss={onDismiss}
               />
             </motion.div>
           ))}
         </AnimatePresence>
 
-        {items.length === 0 && (
+        {initialItems.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center py-16">
             <div className="w-16 h-16 rounded-2xl bg-surface-warm flex items-center justify-center mb-4">
               <Activity className="w-8 h-8 text-mist" />

@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // PocketCFO — Decision Engine API Route (Server-side)
 // POST /api/analyze
-// Receives raw transaction text, calls Z.AI, returns decision
+// Receives raw transaction text, calls Z.AI, writes to Firestore
 // ═══════════════════════════════════════════════════════════════
 
 import { NextRequest, NextResponse } from "next/server";
@@ -64,10 +64,8 @@ export async function POST(req: NextRequest) {
 
     const aiDecision: PocketCFODecision = JSON.parse(responseContent);
 
-    // In production, this would write to Firestore:
-    // await db.collection("invoices").add({ ... })
-    // await db.collection("tactical_feed").add({ ...aiDecision, timestamp: new Date().toISOString(), status: "UNREAD" })
-
+    // Return decision to the client — client will write to Firestore
+    // (We write from client-side to leverage real-time onSnapshot)
     return NextResponse.json({
       success: true,
       decision: aiDecision,
