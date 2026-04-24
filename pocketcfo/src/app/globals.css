@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════
+   PocketCFO — "Asian Water Painting" Design System
+   Serene, misty, elegant — inspired by traditional ink wash art
+   Palette: cream/beige, soft blue, blue-gray, navy, pink, red
+   ═══════════════════════════════════════════════════════════════ */
+
+@theme inline {
+  /* ─── Core Palette (Asian Water Painting) ───────────────── */
+  --color-background: #EFE9DF;
+  --color-foreground: #2a3444;
+  --color-surface: #F1F6F9;
+  --color-surface-warm: #F5F0E8;
+  --color-surface-hover: #E8E2D8;
+  --color-surface-glass: rgba(241, 246, 249, 0.7);
+
+  --color-border: rgba(53, 71, 97, 0.1);
+  --color-border-strong: rgba(53, 71, 97, 0.2);
+
+  /* Primary — Sky Blue (water/mist) */
+  --color-primary: #82BCD5;
+  --color-primary-soft: rgba(130, 188, 213, 0.15);
+  --color-primary-medium: rgba(130, 188, 213, 0.3);
+  --color-primary-glow: rgba(130, 188, 213, 0.4);
+
+  /* Navy — Deep (mountains/depth) */
+  --color-navy: #354761;
+  --color-navy-soft: rgba(53, 71, 97, 0.08);
+  --color-navy-medium: rgba(53, 71, 97, 0.15);
+
+  /* Blue-Gray — Mist */
+  --color-mist: #6B7E8C;
+  --color-mist-light: #8A9BAA;
+  --color-mist-soft: rgba(107, 126, 140, 0.12);
+
+  /* Pink — Blossom */
+  --color-blossom: #F4A4B4;
+  --color-blossom-soft: rgba(244, 164, 180, 0.15);
+  --color-blossom-medium: rgba(244, 164, 180, 0.3);
+
+  /* Red — Vermillion (seal/accent) */
+  --color-vermillion: #D53746;
+  --color-vermillion-soft: rgba(213, 55, 70, 0.1);
+  --color-vermillion-medium: rgba(213, 55, 70, 0.2);
+
+  /* Greens — Jade */
+  --color-jade: #5B9E8F;
+  --color-jade-soft: rgba(91, 158, 143, 0.12);
+
+  /* Amber — Warm accent */
+  --color-warm: #C4956A;
+  --color-warm-soft: rgba(196, 149, 106, 0.12);
+
+  /* ─── Typography ────────────────────────────────────────── */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* ─── Custom Animations ─────────────────────────────────── */
+  --animate-pulse-glow: pulse-glow 3s ease-in-out infinite;
+  --animate-slide-up: slide-up 0.4s ease-out;
+  --animate-shimmer: shimmer 3s linear infinite;
+  --animate-neural-pulse: neural-pulse 4s ease-in-out infinite;
+  --animate-float: float 8s ease-in-out infinite;
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-mist: mist-drift 12s ease-in-out infinite;
+  --animate-ink-spread: ink-spread 0.6s ease-out;
+}
+
+/* ─── Keyframes ───────────────────────────────────────────── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(130, 188, 213, 0.15); }
+  50% { box-shadow: 0 0 30px rgba(130, 188, 213, 0.3); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes neural-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(130, 188, 213, 0.2), inset 0 0 15px rgba(130, 188, 213, 0.05);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(130, 188, 213, 0.35), inset 0 0 25px rgba(130, 188, 213, 0.1);
+    transform: scale(1.015);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes mist-drift {
+  0%, 100% { opacity: 0.3; transform: translateX(0); }
+  50% { opacity: 0.6; transform: translateX(10px); }
+}
+
+@keyframes ink-spread {
+  from { opacity: 0; transform: scale(0.95); filter: blur(4px); }
+  to { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+@keyframes edge-flow {
+  0% { stroke-dashoffset: 20; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* ─── Base Styles ─────────────────────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(130, 188, 213, 0.3) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(130, 188, 213, 0.3);
+  border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(130, 188, 213, 0.5);
+}
+
+html {
+  overflow: hidden;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ─── Glassmorphism (Mist-style) ──────────────────────────── */
+.glass {
+  background: rgba(241, 246, 249, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(53, 71, 97, 0.08);
+}
+
+.glass-warm {
+  background: rgba(245, 240, 232, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(53, 71, 97, 0.06);
+}
+
+.glass-card {
+  background: rgba(241, 246, 249, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(53, 71, 97, 0.08);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(241, 246, 249, 0.75);
+  border-color: rgba(130, 188, 213, 0.3);
+  box-shadow: 0 8px 32px rgba(53, 71, 97, 0.08), 0 0 20px rgba(130, 188, 213, 0.08);
+}
+
+/* ─── Priority Badges ────────────────────────────────────── */
+.badge-low {
+  background: rgba(130, 188, 213, 0.15);
+  color: #5A9AB5;
+  border: 1px solid rgba(130, 188, 213, 0.3);
+}
+
+.badge-medium {
+  background: rgba(196, 149, 106, 0.15);
+  color: #A07850;
+  border: 1px solid rgba(196, 149, 106, 0.3);
+}
+
+.badge-critical {
+  background: rgba(213, 55, 70, 0.1);
+  color: #D53746;
+  border: 1px solid rgba(213, 55, 70, 0.25);
+}
+
+/* ─── Card Type Accents ──────────────────────────────────── */
+.card-tactical {
+  border-left: 3px solid #82BCD5;
+}
+
+.card-alert {
+  border-left: 3px solid #D53746;
+}
+
+.card-opportunity {
+  border-left: 3px solid #5B9E8F;
+}
+
+/* ─── Neural Brain React Flow Overrides ──────────────────── */
+.react-flow__background {
+  background: transparent !important;
+}
+
+.react-flow__minimap {
+  background: rgba(241, 246, 249, 0.8) !important;
+  border: 1px solid rgba(53, 71, 97, 0.08) !important;
+  border-radius: 12px !important;
+}
+
+.react-flow__controls {
+  background: rgba(241, 246, 249, 0.85) !important;
+  border: 1px solid rgba(53, 71, 97, 0.08) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(53, 71, 97, 0.08) !important;
+}
+
+.react-flow__controls-button {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(53, 71, 97, 0.06) !important;
+  color: #6B7E8C !important;
+  fill: #6B7E8C !important;
+}
+
+.react-flow__controls-button:hover {
+  background: rgba(130, 188, 213, 0.1) !important;
+  color: #354761 !important;
+  fill: #354761 !important;
+}
+
+/* ─── Number Font ─────────────────────────────────────────── */
+.font-mono-nums {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Gradient Text ───────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #354761, #82BCD5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Ink Wash Background Pattern ─────────────────────────── */
+.ink-wash-bg {
+  position: relative;
+}
+
+.ink-wash-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(130, 188, 213, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(244, 164, 180, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(53, 71, 97, 0.03) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
