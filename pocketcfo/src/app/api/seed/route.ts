@@ -42,7 +42,7 @@ export async function GET() {
     // 3. Seed tactical feed items
     const feedIds: string[] = [];
     for (const item of DEMO_FEED) {
-      const { id, ...rest } = item;
+      const { id: _id, ...rest } = item;
       const docRef = await addDoc(collection(db, "tactical_feed"), {
         ...rest,
         timestamp: serverTimestamp(),

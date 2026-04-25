@@ -9,14 +9,11 @@ import {
   addDoc,
   setDoc,
   updateDoc,
-  deleteDoc,
-  getDocs,
   getDoc,
   onSnapshot,
   query,
   orderBy,
   limit,
-  where,
   serverTimestamp,
   type Unsubscribe,
   type DocumentData,
@@ -174,7 +171,7 @@ export async function seedDemoData(): Promise<void> {
 
   // Seed tactical feed items
   for (const item of DEMO_FEED) {
-    const { id, ...rest } = item;
+    const { id: _id, ...rest } = item;
     await addDoc(collection(db(), COLLECTIONS.TACTICAL_FEED), {
       ...rest,
       timestamp: serverTimestamp(),
